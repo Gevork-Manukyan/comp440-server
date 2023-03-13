@@ -1,8 +1,7 @@
--- \echo 'Delete and recreate planner db?'
--- \prompt 'Return for yes or control-C to cancel > ' answer
-
-DROP DATABASE IF EXISTS testdb;
-CREATE DATABASE testdb;
-USE testdb;
-
--- \i planner-schema.sql
+CREATE TABLE users (
+    username    VARCHAR(70) NOT NULL PRIMARY KEY,
+    password    TEXT NOT NULL,
+    firstName   VARCHAR(50) NOT NULL,
+    lastName    VARCHAR(50) NOT NULL,
+    email       VARCHAR(70) NOT NULL
+);

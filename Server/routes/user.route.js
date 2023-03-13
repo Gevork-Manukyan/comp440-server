@@ -17,6 +17,7 @@ router.post("/login", async (req, res) => {
 // Register Endpoint 
 router.post("/register", async (req, res) => {
     const response = await userController.register(req, res)
+
     res.status(200).send(response)
 })
 

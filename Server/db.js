@@ -12,11 +12,11 @@ db.connect((err) => {
   console.log("Connected to Database!")
 })
 
-db.query('SELECT * FROM course', (err, result, fields) => {
-  if (err) throw err
+// db.query('SELECT * FROM course', (err, result, fields) => {
+//   if (err) throw err
 
-  console.log('The solution is: ', result)
-})
+//   console.log('The solution is: ', result)
+// })
 
 // connection.end()
 

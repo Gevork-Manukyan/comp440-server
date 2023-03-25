@@ -1,16 +1,26 @@
-const mysql = require('mysql2')
+const Sequelize = require('sequelize');
 
-const db = mysql.createConnection({
+const sequelize = new Sequelize('comp440', 'root', 'Manukyan11@', {
   host: 'localhost',
-  user: 'root',
-  password: 'Manukyan11@',
-  database: 'comp440'
-})
+  dialect: 'mysql'
+});
 
-db.connect((err) => {
-  if (err) throw err
-  console.log("Connected to Database!")
-})
+module.exports = sequelize;
+
+
+// const mysql = require('mysql2')
+
+// const db = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'Manukyan11@',
+//   database: 'comp440'
+// })
+
+// db.connect((err) => {
+//   if (err) throw err
+//   console.log("Connected to Database!")
+// })
 
 // db.query('SELECT * FROM course', (err, result, fields) => {
 //   if (err) throw err
@@ -20,4 +30,4 @@ db.connect((err) => {
 
 // connection.end()
 
-module.exports = db
+// module.exports = db

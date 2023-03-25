@@ -4,13 +4,9 @@ const sequelize = require('../sequelize');
 class User extends Sequelize.Model {}
 
 User.init({
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   username: {
     type: Sequelize.STRING,
+    primaryKey: true,
     allowNull: false
   },
   password: {

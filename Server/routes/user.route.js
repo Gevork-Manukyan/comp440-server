@@ -5,7 +5,7 @@ const userController = require("../controllers/userController")
 
 // Login Endpoint
 router.post("/login", async (req, res) => {
-    const response = await userController.login(req, res)
+    const response = await userController.login(req.body)
 
     if (response === false) {
         res.status(401).send({ error: "Email or password is invalid." })
@@ -17,7 +17,6 @@ router.post("/login", async (req, res) => {
 // Register Endpoint 
 router.post("/register", async (req, res) => {
     const response = await userController.register(req.body)
-
     res.status(200).send(response)
 })
 

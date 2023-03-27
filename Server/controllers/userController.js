@@ -3,7 +3,7 @@ const db = require("../db")
 const { BadRequestError } = require('../../utils/errors');
 
 const login = async (credentials) => {
-
+    return true
 }
 
 const register = async (credentials) => {
@@ -28,25 +28,19 @@ const register = async (credentials) => {
     if (existingUser) {
         throw new BadRequestError(`A user already exists with email: ${credentials.email}`);
     }
+
+    const user = User.create({ username: credentials.username, email: credentials.email, password: credentials.password, firstName: credentials.firstName, lastName: credentials.lastName });
+
 }
 
-function fetchUserByEmail(email) {
+async function fetchUserByEmail(email) {
     if (!email) {
         throw new BadRequestError('No email provided');
     }
 
-    const query = `SELECT * FROM users WHERE email = ? `;
-
-    const result = db.query(query, [email.toLowerCase()], (err, results, fields) => {
-        if (err) throw err
-        console.log(results)
-    });
-
-    // console.log(result)
-    // const user = result._rows[0];
-    // console.log(user)
-
-    // return user;
+    const user = await User.findOne({ where: { email } });
+    return user?.dataValues
+    
 }
 
 module.exports = {

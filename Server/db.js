@@ -5,6 +5,14 @@ const sequelize = new Sequelize('comp440', 'root', 'Manukyan11@', {
   dialect: 'mysql'
 });
 
+sequelize.sync()
+  .then(() => {
+    console.log('Users table created');
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
 module.exports = sequelize;
 
 

@@ -1,7 +1,12 @@
+const DATABASE_NAME = process.env.DATABASE_NAME
+const DATABASE_USERNAME = process.env.DATABASE_USERNAME
+const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD
+const DATABASE_HOST = process.env.DATABASE_HOST
+
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('comp440', 'root', 'Manukyan11@', {
-  host: 'localhost',
+const sequelize = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
+  host: DATABASE_HOST,
   dialect: 'mysql'
 });
 
@@ -14,28 +19,3 @@ sequelize.sync()
   });
 
 module.exports = sequelize;
-
-
-// const mysql = require('mysql2')
-
-// const db = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'Manukyan11@',
-//   database: 'comp440'
-// })
-
-// db.connect((err) => {
-//   if (err) throw err
-//   console.log("Connected to Database!")
-// })
-
-// db.query('SELECT * FROM course', (err, result, fields) => {
-//   if (err) throw err
-
-//   console.log('The solution is: ', result)
-// })
-
-// connection.end()
-
-// module.exports = db

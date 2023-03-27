@@ -15,18 +15,18 @@ app.use("/user", userRoutes)
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {
-    return next(new NotFoundError())
-  })
+  return next(new NotFoundError())
+})
   
   /** Generic error handler; anything unhandled goes here. */
-  app.use((err, req, res, next) => {
-    const status = err.status || 500
-    const message = err.message
-  
-    return res.status(status).json({
-      error: { message, status },
-    })
+app.use((err, req, res, next) => {
+  const status = err.status || 500
+  const message = err.message
+
+  return res.status(status).json({
+    error: { message, status },
   })
+})
 
 // start the Express server
 app.listen(3003, () => {

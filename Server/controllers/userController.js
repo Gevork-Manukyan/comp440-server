@@ -3,9 +3,25 @@ const db = require("../db")
 const { BadRequestError } = require('../../utils/errors');
 
 const login = async (credentials) => {
-    return true
-}
+    const requiredFields = ['email', 'password'];
+    requiredFields.forEach((field) => {
+        if (!credentials?.hasOwnProperty(field)) {
+            throw new BadRequestError(`Missing ${field} in request body.`);
+        }
+    })
 
+    const user = await User.findOne({ where: { email: credentials.email } });
+
+    if (user) {
+        const isValid = credentials.password === user.password
+        if (isValid) {
+            return await User.build({ username: user.username, email: user.email, firstName: user.firstName, lastName: user.lastName });
+        }
+    }
+
+    throw new UnauthorizedError('Invalid Email or Password');
+}
+ 
 const register = async (credentials) => {
     const requiredFields = ['username', 'email', 'password', 'firstName', 'lastName'];
     requiredFields.forEach((field) => {

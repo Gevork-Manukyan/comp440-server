@@ -18,7 +18,7 @@ router.post("/login", async (req, res, next) => {
 router.post("/register", async (req, res, next) => {
     try {
         const response = await userController.register(req.body)
-        res.status(200).send(response)
+        res.status(200).json(response)
     
     } catch (err) {
         next(err)

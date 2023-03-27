@@ -45,8 +45,13 @@ const register = async (credentials) => {
         throw new BadRequestError(`A user already exists with email: ${credentials.email}`);
     }
 
-    const user = User.create({ username: credentials.username, email: credentials.email, password: credentials.password, firstName: credentials.firstName, lastName: credentials.lastName });
-
+    const user = await User.create({ username: credentials.username, email: credentials.email, password: credentials.password, firstName: credentials.firstName, lastName: credentials.lastName });
+    return {
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName
+    }
 }
 
 async function fetchUserByEmail(email) {

@@ -12,6 +12,9 @@ app.use(express.json())
 app.use("/user", userRoutes)
 
 
+app.get("initDB", (req, res, next) => {
+  
+})
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {

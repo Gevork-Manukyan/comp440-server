@@ -5,6 +5,7 @@ const app = express()
 
 //Routes
 const userRoutes = require("./routes/user.route")
+const { initDB } = require("./controllers/dbController")
 
 // Middleware
 app.use(cors())
@@ -12,8 +13,9 @@ app.use(express.json())
 app.use("/user", userRoutes)
 
 
-app.get("initDB", (req, res, next) => {
-  
+app.get("/initDB", (req, res, next) => {
+  initDB()
+  res.status(200)
 })
 
 /** Handle 404 errors -- this matches everything */

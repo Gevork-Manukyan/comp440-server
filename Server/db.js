@@ -10,12 +10,4 @@ const sequelize = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSW
   dialect: 'mysql'
 });
 
-sequelize.sync()
-  .then(() => {
-    console.log('Users table created');
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-
 module.exports = sequelize;

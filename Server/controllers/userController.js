@@ -15,7 +15,7 @@ const login = async (credentials) => {
     if (user) {
         const isValid = credentials.password === user.password
         if (isValid) {
-            return await User.build({ username: user.username, email: user.email, firstName: user.firstName, lastName: user.lastName });
+            return User.build({ username: user.username, email: user.email, firstName: user.firstName, lastName: user.lastName });
         }
     }
 
@@ -66,5 +66,6 @@ async function fetchUserByEmail(email) {
 
 module.exports = {
     login,
-    register
+    register, 
+    fetchUserByEmail
 }

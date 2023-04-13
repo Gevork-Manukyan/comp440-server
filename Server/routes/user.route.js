@@ -1,13 +1,30 @@
 const express = require("express")
 const router = express.Router()
+const tokens = require('../../utils/tokens');
 const userController = require("../controllers/userController")
+const User = require("../models/user.model")
+const security = require("../middleware/security")
 
+router.get('/me', security.requireAuthenticatedUser, async (req, res, next) => {
+    try {
+        const { email } = res.locals.user;
+        const user = await userController.fetchUserByEmail(email);
+        const publicUser = User.build({ username: user.username, email: user.email, firstName: user.firstName, lastName: user.lastName });
+        return res.status(200).json({ user: publicUser });
+    } catch(err) {
+        next(err);
+    }
+})
 
 // Login Endpoint
 router.post("/login", async (req, res, next) => {
     try {
         const response = await userController.login(req.body)
-        res.status(200).json(response)
+        if (!response) {
+            return res.status(401).json({ message: "Invalid email or password" });
+        }
+        const token = tokens.createUserJwt(response);
+        res.status(200).json({ response, token })
 
     } catch (err) {
         next(err)
@@ -18,7 +35,8 @@ router.post("/login", async (req, res, next) => {
 router.post("/register", async (req, res, next) => {
     try {
         const response = await userController.register(req.body)
-        res.status(200).json(response)
+        const token = tokens.createUserJwt(response)
+        res.status(200).json({ response, token })
     
     } catch (err) {
         next(err)

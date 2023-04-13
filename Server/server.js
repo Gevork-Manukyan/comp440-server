@@ -2,6 +2,8 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const app = express()
+const security = require("./middleware/security")
+
 
 //Routes
 const userRoutes = require("./routes/user.route")
@@ -10,6 +12,7 @@ const { initDB } = require("./controllers/dbController")
 // Middleware
 app.use(cors())
 app.use(express.json())
+app.use(security.extractUserFromJwt);
 app.use("/user", userRoutes)
 
 

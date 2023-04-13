@@ -24,7 +24,7 @@ router.post("/login", async (req, res, next) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
         const token = tokens.createUserJwt(response);
-        res.status(200).json({ response, token })
+        res.status(200).json({ user: response, token })
 
     } catch (err) {
         next(err)
@@ -36,7 +36,7 @@ router.post("/register", async (req, res, next) => {
     try {
         const response = await userController.register(req.body)
         const token = tokens.createUserJwt(response)
-        res.status(200).json({ response, token })
+        res.status(200).json({ user: response, token })
     
     } catch (err) {
         next(err)

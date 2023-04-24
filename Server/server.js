@@ -11,6 +11,7 @@ const userRoutes = require("./routes/user.route")
 const dbRoutes = require('./routes/database.route')
 const itemsRoutes = require('./routes/items.route')
 const categoryRoutes = require("./routes/category.route")
+const reviewRoutes = require("./routes/review.route")
 
 // Middleware
 app.use(cors())

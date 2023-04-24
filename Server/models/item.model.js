@@ -29,7 +29,7 @@ Item.init({
     }
 }, {
   sequelize,
-  modelName: 'item'
+  modelName: 'items'
 });
 
 User.hasMany(Item);

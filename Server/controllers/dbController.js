@@ -1,4 +1,5 @@
 const sequelize = require("../db");
+const Item = require("../models/item.model");
 const User = require("../models/user.model");
 
 const initDB = () => {
@@ -13,6 +14,15 @@ const initDB = () => {
         User.create({ username: "BrianDoe123", email: "BrianDoe@gmail.com", password: "password123", firstName: "Brian", lastName: "Doe" });
 
 
+        Item.create({
+          title: 'Example Item',
+          description: 'This is an example item.',
+          price: 10.99
+        }).then(item => {
+            console.log('Item created:', item.toJSON());
+        }).catch(error => {
+            console.error('Error creating item:', error);
+        });
     })
     .catch((error) => {
       console.error(error);

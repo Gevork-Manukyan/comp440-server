@@ -4,7 +4,7 @@ const itemsController = require("../controllers/itemsController")
 
 router.get('/allItems', async (req, res) => {
     try {
-      const items = itemsController.getAllItems()
+      const items = await itemsController.getAllItems()
       res.send(items);
     } catch (err) {
       console.error('Error fetching items:', err);

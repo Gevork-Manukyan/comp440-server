@@ -30,34 +30,37 @@ const initDB = () => {
         User.create({ username: "BillyDoe123", email: "BillyDoe@gmail.com", password: "password123", firstName: "Billy", lastName: "Doe" });
         User.create({ username: "SteveDoe123", email: "SteveDoe@gmail.com", password: "password123", firstName: "Steve", lastName: "Doe" });
         User.create({ username: "KevinDoe123", email: "KevinDoe@gmail.com", password: "password123", firstName: "Kevin", lastName: "Doe" });
-        User.create({ username: "BrianDoe123", email: "BrianDoe@gmail.com", password: "password123", firstName: "Brian", lastName: "Doe" });
+        User.create({ username: "BrianDoe123", email: "BrianDoe@gmail.com", password: "password123", firstName: "Brian", lastName: "Doe" });        
 
+    })
+    .then(() => {
+      const item = Item.create({
+        title: "Example Item",
+        description: "This is an example item.",
+        price: 10.99,
+      });
+      console.log("Item created:");
+      return item
+    })
+    .then((item) => {
+      Review.create({
+        rating: "Excellent",
+        reviewDescription: "This is a great product",
+        itemId: item.id,
+      });
+      console.log("Review created:");
+      return item
+    })
+    .then((item) => {
+      const category = Category.create({
+        name: 'New Category'
+      });
 
-        try {
-          const item = Item.create({
-            title: "Example Item",
-            description: "This is an example item.",
-            price: 10.99,
-          });
-          console.log("Item created:");
-        
-          const review = Review.create({
-            rating: "Excellent",
-            reviewDescription: "This is a great product",
-            itemId: item.id,
-          });
-          console.log("Review created:");
+      return Promise.all([item, category]);
+    })
+    .then(([item, category]) => {
+      
 
-          const newCategory = Category.create({
-            name: 'New Category'
-          });
-
-
-          
-        } catch (error) {
-          console.error("Error creating item and/or review:", error);
-        }
-        
 
     })
     .catch((error) => {

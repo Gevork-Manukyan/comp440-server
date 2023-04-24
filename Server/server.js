@@ -3,7 +3,7 @@ const express = require("express")
 const cors = require("cors")
 const app = express()
 const security = require("./middleware/security")
-const ItemCategory = require("./models/item-category.model")
+require("./models/item-category.model")
 
 
 //Routes

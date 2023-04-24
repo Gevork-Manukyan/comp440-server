@@ -9,6 +9,7 @@ const security = require("./middleware/security")
 const userRoutes = require("./routes/user.route")
 const dbRoutes = require('./routes/database.route')
 const itemsRoutes = require('./routes/items.route')
+const categoryRoutes = require("./routes/category.route")
 
 // Middleware
 app.use(cors())
@@ -17,6 +18,7 @@ app.use(security.extractUserFromJwt);
 app.use("/user", userRoutes)
 app.use("/db", dbRoutes)
 app.use("/items", itemsRoutes)
+app.use("/category", categoryRoutes)
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {

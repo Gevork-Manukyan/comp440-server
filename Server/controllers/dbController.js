@@ -1,6 +1,7 @@
 const sequelize = require("../db");
 const Item = require("../models/item.model");
 const User = require("../models/user.model");
+const Review = require("../models/review.model")
 
 const initDB = () => {
     sequelize.sync({ force: true })
@@ -19,10 +20,20 @@ const initDB = () => {
           description: 'This is an example item.',
           price: 10.99
         }).then(item => {
-            console.log('Item created:', item.toJSON());
+          console.log('Item created:');
+          Review.create({
+            rating: 'Excellent',
+            reviewDescription: 'This is a great product',
+            itemId: item.id
+          }).then(review => {
+            console.log('Review created:');
+          }).catch(error => {
+            console.error('Error creating review:', error);
+          })
         }).catch(error => {
-            console.error('Error creating item:', error);
-        });
+          console.error('Error creating item:', error);
+        })
+
     })
     .catch((error) => {
       console.error(error);

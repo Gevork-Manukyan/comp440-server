@@ -1,24 +1,26 @@
-const { DataTypes } = require('sequelize');
+const Sequelize = require('sequelize');
 const sequelize = require('../db');
 const Item = require("./item.model")
 
-const Reviews = sequelize.define('Review', {
+class Reviews extends Sequelize.Model {}
+
+Reviews.init({
   id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   rating: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   reviewDescription: {
-    type: DataTypes.TEXT,
+    type: Sequelize.TEXT,
     allowNull: false,
   },
 }, {
-  tableName: 'reviews',
-  timestamps: false,
+  sequelize,
+  modelName: 'reviews',
 });
 
 Reviews.belongsTo(Item);

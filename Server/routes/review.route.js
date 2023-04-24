@@ -12,4 +12,14 @@ router.get('/allReviews', async (req, res) => {
     }
 });
 
+router.get('/allReviewsWithProductInfo', async (req, res) => {
+  try {
+    const reviews = await reviewController.getAllReviewsWithProductInfo()
+    res.send(reviews);
+  } catch (err) {
+    console.error('Error fetching reviews:', err);
+    res.status(500).send({ error: { message: 'An error occurred while fetching reviews', details: err } });
+  }
+});
+
 module.exports = router

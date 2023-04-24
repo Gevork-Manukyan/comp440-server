@@ -7,19 +7,14 @@ const security = require("./middleware/security")
 
 //Routes
 const userRoutes = require("./routes/user.route")
-const { initDB } = require("./controllers/dbController")
+const dbRoutes = require('./routes/database.route')
 
 // Middleware
 app.use(cors())
 app.use(express.json())
 app.use(security.extractUserFromJwt);
 app.use("/user", userRoutes)
-
-
-app.get("/initDB", (req, res, next) => {
-  initDB()
-  res.status(200)
-})
+app.use("/db", dbRoutes)
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {

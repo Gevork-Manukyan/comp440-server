@@ -21,6 +21,7 @@ app.use("/user", userRoutes)
 app.use("/db", dbRoutes)
 app.use("/items", itemsRoutes)
 app.use("/category", categoryRoutes)
+app.use("./review", reviewRoutes)
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {

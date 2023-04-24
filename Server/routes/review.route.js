@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const reviewController = require("../controllers/")
 
-router.get('/reviews', async (req, res) => {
+router.get('/allReviews', async (req, res) => {
     try {
       const reviews = await Reviews.findAll();
       res.send(reviews);
@@ -10,6 +10,6 @@ router.get('/reviews', async (req, res) => {
       console.error('Error fetching reviews:', err);
       res.status(500).send({ error: { message: 'An error occurred while fetching reviews', details: err } });
     }
-  });
+});
 
 module.exports = router

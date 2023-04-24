@@ -4,7 +4,7 @@ const reviewController = require("../controllers/reviewController");
 
 router.get('/allReviews', async (req, res) => {
     try {
-      const reviews = reviewController.getAllReviews()
+      const reviews = await reviewController.getAllReviews()
       res.send(reviews);
     } catch (err) {
       console.error('Error fetching reviews:', err);

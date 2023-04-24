@@ -1,8 +1,13 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
+const Item = require("./item.model")
 
 const Reviews = sequelize.define('Review', {
-  // Replace this with the actual primary key column name and data type
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   rating: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,5 +20,8 @@ const Reviews = sequelize.define('Review', {
   tableName: 'reviews',
   timestamps: false,
 });
+
+Reviews.belongsTo(Item);
+Item.hasMany(Reviews);
 
 module.exports = Reviews;

@@ -59,8 +59,8 @@ const initDB = () => {
       return Promise.all([item, category]);
     })
     .then(([item, category]) => {
-      
 
+      return item.addCategory(category);
 
     })
     .catch((error) => {

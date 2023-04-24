@@ -1,10 +1,10 @@
 const express = require("express")
 const router = express.Router()
-const { initDB } = require("../controllers/dbController")
+const dbController = require("../controllers/dbController")
 
 
 router.get("/initDB", (req, res, next) => {
-    initDB()
+    dbController.initDB()
     res.status(200)
 })
 

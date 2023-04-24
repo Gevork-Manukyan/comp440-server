@@ -1,22 +1,31 @@
 const Item = require("../models/item.model")
-const db = require("../db")
+const ItemCategory = require("../models/item-category.model")
+const Category = require("../models/category.model")
 
 async function getAllItems() {
-    return await Item.findAll();
+  return await Item.findAll({
+    include: [{
+      model: ItemCategory,
+      include: [Category]
+    }]
+  });
 }
 
-async function getAllWhere(category_startswith) {
-    return await Item.findAll({
+async function getAllWhere(categoryName) {
+  return await Item.findAll({
+    include: [{
+      model: ItemCategory,
+      include: [{
+        model: Category,
         where: {
-        category: {
-            [sequalize.like]: `${category_startswith}%`
+          name: categoryName
         }
-        }
-    });
+      }]
+    }]
+  });
 }
-
 
 module.exports = {
-    getAllItems,
-    getAllWhere
+  getAllItems,
+  getAllWhere
 }

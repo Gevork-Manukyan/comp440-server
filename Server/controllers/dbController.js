@@ -53,7 +53,7 @@ const initDB = () => {
     })
     .then((item) => {
       const category = Category.create({
-        name: 'New Category'
+        category: 'New Category'
       });
 
       return Promise.all([item, category]);

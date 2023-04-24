@@ -9,7 +9,7 @@ Category.init({
     primaryKey: true,
     autoIncrement: true
   },
-  name: {
+  category: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true
@@ -20,7 +20,7 @@ Category.init({
 });
 
 Category.beforeValidate((category, options) => {
-    category.name = category.name.toLowerCase();
+    category.category = category.category.toLowerCase();
   });
 
 module.exports = Category;

@@ -52,15 +52,20 @@ const initDB = () => {
       return item
     })
     .then((item) => {
-      const category = Category.create({
-        category: 'New Category'
+      const category1 = Category.create({
+        category: 'Ball'
       });
 
-      return Promise.all([item, category]);
-    })
-    .then(([item, category]) => {
+      const category2 = Category.create({
+        category: 'Weapon'
+      });
 
-      return item.addCategory(category);
+      return Promise.all([item, category1, category2]);
+    })
+    .then(([item, category1, category2]) => {
+
+      item.addCategory(category1);
+      item.addCategory(category2);
 
     })
     .catch((error) => {

@@ -3,7 +3,6 @@ const express = require("express")
 const cors = require("cors")
 const app = express()
 const security = require("./middleware/security")
-const sequelize = require('./db');
 const ItemCategory = require("./models/item-category.model")
 
 
@@ -21,7 +20,6 @@ app.use("/user", userRoutes)
 app.use("/db", dbRoutes)
 app.use("/items", itemsRoutes)
 app.use("/category", categoryRoutes)
-sequelize.sync()
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {

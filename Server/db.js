@@ -10,4 +10,14 @@ const sequelize = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSW
   dialect: 'mysql'
 });
 
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection to the database has been established successfully.');
+    sequelize.sync()
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
+
 module.exports = sequelize;

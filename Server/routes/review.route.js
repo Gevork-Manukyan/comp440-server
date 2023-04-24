@@ -1,10 +1,10 @@
 const express = require("express")
 const router = express.Router()
-const reviewController = require("../controllers/")
+const reviewController = require("../controllers/reviewController");
 
 router.get('/allReviews', async (req, res) => {
     try {
-      const reviews = await Reviews.findAll();
+      const reviews = reviewController.getAllReviews()
       res.send(reviews);
     } catch (err) {
       console.error('Error fetching reviews:', err);

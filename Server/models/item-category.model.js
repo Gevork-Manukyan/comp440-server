@@ -30,4 +30,7 @@ ItemCategory.init({
   timestamps: false
 });
 
+Category.belongsToMany(Item, { through: ItemCategory });
+Item.belongsToMany(Category, { through: ItemCategory });
+
 module.exports = ItemCategory;

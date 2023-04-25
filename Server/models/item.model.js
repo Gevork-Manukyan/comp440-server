@@ -19,7 +19,7 @@ Item.init({
         allowNull: false
     },
     datePosted: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
         defaultValue: Sequelize.NOW
     },

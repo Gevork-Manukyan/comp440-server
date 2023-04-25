@@ -19,7 +19,7 @@ async function getAllItems() {
 
   const result = items.map(item => {
     const itemData = item.toJSON();
-    itemData.categories = itemData.categories.map(category => category.category);
+    itemData.categories = itemData.categories.map(category => category.category).join(", ");
     return itemData;
   });
 
@@ -46,7 +46,7 @@ async function getAllWhere(categoryName) {
 
   const result = items.map(item => {
     const itemData = item.toJSON();
-    itemData.categories = itemData.categories.map(category => category.category);
+    itemData.categories = itemData.categories.map(category => category.category).join(", ");
     return itemData;
   });
 

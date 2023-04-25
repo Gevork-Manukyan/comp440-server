@@ -1,26 +1,48 @@
 const Review = require("../models/review.model")
 const Item = require("../models/item.model")
+const User = require("../models/user.model")
 const db = require("../db")
 
 
-
 async function getAllReviews() {
-    const reviews = await Review.findAll();
-    return reviews
+  const reviews = await Review.findAll();
+  return reviews
 }
 
-async function getAllReviewsWithProductInfo() {
+async function getReviewsWithDetails() {
+  try {
     const reviews = await Review.findAll({
-        attributes: ['id', 'rating', 'reviewDescription'],
-        include: {
+      attributes: ['id', 'rating', 'reviewDescription'],
+      include: [
+        {
           model: Item,
-          attributes: ['title', 'description', 'datePosted', 'price']
-        }
-      });
-    return reviews
+          attributes: ['title', 'price'],
+        },
+        {
+          model: User,
+          attributes: ['username'],
+        },
+      ],
+    });
+
+    const reviews_cleaned = reviews.map(review => ({
+      reviewId: review.id,
+      username: review.user.username,
+      title: review.item.title,
+      price: review.item.price,
+      rating: review.rating,
+      description: review.reviewDescription,
+    }));
+
+    console.log("REVIEWS: ", reviews_cleaned)
+    return reviews_cleaned
+
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 module.exports = {
     getAllReviews,
-    getAllReviewsWithProductInfo
+    getReviewsWithDetails
 }

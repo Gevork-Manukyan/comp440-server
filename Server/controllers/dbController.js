@@ -48,6 +48,7 @@ const initDB = () => {
         rating: "Excellent",
         reviewDescription: "This is a great product",
         itemId: item.id,
+        userUsername: "BillyDoe123"
       });
       console.log("Review created:");
       return item

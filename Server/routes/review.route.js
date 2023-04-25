@@ -12,9 +12,9 @@ router.get('/allReviews', async (req, res) => {
     }
 });
 
-router.get('/allReviewsWithProductInfo', async (req, res) => {
+router.get('/getReviewsWithDetails', async (req, res) => {
   try {
-    const reviews = await reviewController.getAllReviewsWithProductInfo()
+    const reviews = await reviewController.getReviewsWithDetails()
     res.send(reviews);
   } catch (err) {
     console.error('Error fetching reviews:', err);

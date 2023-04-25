@@ -53,7 +53,33 @@ async function getAllWhere(categoryName) {
   return result 
 }
 
+async function postItem(itemData) {
+  // Create a new item record in the database
+  const newItem = await Item.create({
+    title: itemData.title,
+    description: itemData.description,
+    price: itemData.price
+  });
+
+  // Find or create the categories for the item
+  const categories = await Promise.all(
+    itemData.category.map((cat) =>
+      Category.findOrCreate({
+        where: { category: cat.trim().toLowerCase() }
+      })
+    )
+  );
+
+  // Associate the categories with the new item using the ItemCategory join table
+  await newItem.setCategories(categories.map((cat) => cat[0]));
+
+  // Return the newly created item
+  return newItem;
+}
+
+
 module.exports = {
   getAllItems,
-  getAllWhere
+  getAllWhere,
+  postItem
 }

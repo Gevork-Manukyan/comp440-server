@@ -29,9 +29,10 @@ router.get('/search', async (req, res, next) => {
 
 router.post("/postItem", async (req, res, next) => {
   const data = req.body
-  console.log(data)
+  
   try {
-    
+    await itemsController.postItem(data)
+    res.status(201)
   } catch (err) {
     next(err)
   }

@@ -34,7 +34,6 @@ async function getReviewsWithDetails() {
       description: review.reviewDescription,
     }));
 
-    console.log("REVIEWS: ", reviews_cleaned)
     return reviews_cleaned
 
   } catch (error) {

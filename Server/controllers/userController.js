@@ -64,8 +64,17 @@ async function fetchUserByEmail(email) {
     
 }
 
+async function getUserByUsername(username) {
+    const user = await User.findOne({
+        where: { username: username }
+    });
+
+    return user
+}
+
 module.exports = {
     login,
     register, 
-    fetchUserByEmail
+    fetchUserByEmail,
+    getUserByUsername
 }

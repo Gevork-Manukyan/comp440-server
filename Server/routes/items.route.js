@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const itemsController = require("../controllers/itemsController")
+const userController = require("../controllers/userController")
 
 router.get('/allItems', async (req, res, next) => {
     try {
@@ -28,10 +29,13 @@ router.get('/search', async (req, res, next) => {
 });
 
 router.post("/postItem", async (req, res, next) => {
-  const data = req.body
+  const item = req.body
+  const user = res.locals.user
   
   try {
-    await itemsController.postItem(data)
+    const user_obj = await userController.fetchUserByEmail(user.email)
+    const username = user_obj.username
+    await itemsController.postItem(username, item)
     res.status(201)
   } catch (err) {
     next(err)

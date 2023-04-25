@@ -2,6 +2,7 @@ const ItemCategory = require("../models/item-category.model")
 const Item = require("../models/item.model")
 const Category = require("../models/category.model");
 const sequelize = require("../db");
+const userController = require('./userController')
 
 async function getAllItems() {
   const items = await Item.findAll({
@@ -53,13 +54,17 @@ async function getAllWhere(categoryName) {
   return result 
 }
 
-async function postItem(itemData) {
+async function postItem(username, itemData) {
+
   // Create a new item record in the database
   const newItem = await Item.create({
     title: itemData.title,
     description: itemData.description,
-    price: itemData.price
+    price: itemData.price,
+    userUsername: username
   });
+
+  // const user = userController.getUserByUsername(username)
 
   // Find or create the categories for the item
   const categories = await Promise.all(

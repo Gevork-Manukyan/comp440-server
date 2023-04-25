@@ -2,17 +2,16 @@ const express = require("express")
 const router = express.Router()
 const itemsController = require("../controllers/itemsController")
 
-router.get('/allItems', async (req, res) => {
+router.get('/allItems', async (req, res, next) => {
     try {
       const items = await itemsController.getAllItems()
       res.send(items);
     } catch (err) {
-      console.error('Error fetching items:', err);
-      res.status(500).send({ error: { message: 'An error occurred while fetching items', details: err } });
+      next(err)
     }
   });
   
-router.get('/search', async (req, res) => {
+router.get('/search', async (req, res, next) => {
     const { category_startswith } = req.query;
     try {
         let items;
@@ -24,10 +23,19 @@ router.get('/search', async (req, res) => {
         }
         res.send(items);
     } catch (err) {
-        console.error('Error fetching items with specified category:', err);
-        res.status(500).send({ error: { message: 'An error occurred while fetching items with the specified category' } });
+       next(err)
     }
 });
+
+router.post("/postItem", async (req, res, next) => {
+  const data = req.body
+  console.log(data)
+  try {
+    
+  } catch (err) {
+    next(err)
+  }
+})
 
 
 module.exports = router

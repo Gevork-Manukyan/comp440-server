@@ -6,7 +6,7 @@ const userController = require('./userController')
 
 async function getAllItems() {
   const items = await Item.findAll({
-    attributes: ['id', 'title', 'description', 'datePosted', 'price'],
+    attributes: ['id', 'title', 'description', 'datePosted', 'price', 'userUsername'],
     include: [
       {
         model: Category,
@@ -30,7 +30,7 @@ async function getAllItems() {
 
 async function getAllWhere(categoryName) {
   const items = await Item.findAll({
-    attributes: ['id', 'title', 'description', 'datePosted', 'price'],
+    attributes: ['id', 'title', 'description', 'datePosted', 'price', 'userUsername'],
     include: [
       {
         model: Category,

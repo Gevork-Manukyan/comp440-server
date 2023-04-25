@@ -38,6 +38,7 @@ const initDB = () => {
         title: "Example Item",
         description: "This is an example item.",
         price: 10.99,
+        userUsername: "BillyDoe123"
       });
       console.log("Item created:");
       return item

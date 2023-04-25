@@ -35,8 +35,13 @@ router.post("/postItem", async (req, res, next) => {
   try {
     const user_obj = await userController.fetchUserByEmail(user.email)
     const username = user_obj.username
+    const check = await userController.checkUserPostsToday(username)
+    
+    if (!check) throw Error("POST LIMIT REACHED")
+
     await itemsController.postItem(username, item)
     res.status(201)
+    
   } catch (err) {
     next(err)
   }

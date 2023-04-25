@@ -1,6 +1,9 @@
 const User = require("../models/user.model")
+const Item = require("../models/item.model")
 const db = require("../db")
 const { BadRequestError } = require('../../utils/errors');
+const sequelize = require("../db");
+
 
 const login = async (credentials) => {
     const requiredFields = ['username', 'password'];
@@ -54,6 +57,23 @@ const register = async (credentials) => {
     }
 }
 
+async function checkUserPostsToday(username) {
+    // get the current date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // set the time to midnight
+    
+    // count the number of posts made by the user today
+    const count = await Item.count({
+      where: {
+        userUsername: username,
+        datePosted: today
+      },
+    });
+    
+    // return true if the user has made no more than 3 posts today, false otherwise
+    return count < 3;
+}
+
 async function fetchUserByEmail(email) {
     if (!email) {
         throw new BadRequestError('No email provided');
@@ -76,5 +96,6 @@ module.exports = {
     login,
     register, 
     fetchUserByEmail,
+    checkUserPostsToday,
     getUserByUsername
 }

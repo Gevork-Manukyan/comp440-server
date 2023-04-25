@@ -1,5 +1,6 @@
 const User = require("../models/user.model")
 const Item = require("../models/item.model")
+const Review = require("../models/review.model")
 const db = require("../db")
 const { BadRequestError } = require('../../utils/errors');
 const sequelize = require("../db");
@@ -60,7 +61,6 @@ const register = async (credentials) => {
 async function checkUserPostsToday(username) {
     // get the current date
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // set the time to midnight
     
     // count the number of posts made by the user today
     const count = await Item.count({
@@ -71,6 +71,20 @@ async function checkUserPostsToday(username) {
     });
     
     // return true if the user has made no more than 3 posts today, false otherwise
+    return count < 3;
+}
+
+async function checkUserReviewToday(username) {
+    const today = new Date();
+    
+    const count = await Review.count({
+      where: {
+        userUsername: username,
+        datePosted: today
+      },
+    });
+    
+    console.log("COUNT: ", count)
     return count < 3;
 }
 
@@ -97,5 +111,6 @@ module.exports = {
     register, 
     fetchUserByEmail,
     checkUserPostsToday,
+    checkUserReviewToday,
     getUserByUsername
 }

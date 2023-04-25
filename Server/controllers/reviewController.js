@@ -53,5 +53,5 @@ async function postReview(username, review) {
 module.exports = {
     getAllReviews,
     getReviewsWithDetails,
-    postReview
+    postReview,
 }

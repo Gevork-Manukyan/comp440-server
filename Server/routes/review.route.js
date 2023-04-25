@@ -28,6 +28,11 @@ router.post("/postReview", async (req, res, next) => {
   try {
     const user_obj = await userController.fetchUserByEmail(user.email)
     const username = user_obj.username
+    const check = await userController.checkUserReviewToday(username)
+    console.log("CHECK: ", check)
+
+    if (!check) throw Error("REVIEW LIMIT REACHED")
+
     await reviewController.postReview(username, review)
     res.status(201)
   } catch (err) {

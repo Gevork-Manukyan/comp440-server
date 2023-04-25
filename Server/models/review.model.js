@@ -19,6 +19,11 @@ Reviews.init({
     type: Sequelize.TEXT,
     allowNull: false,
   },
+  datePosted: {
+    type: Sequelize.DATEONLY,
+    allowNull: false,
+    defaultValue: Sequelize.NOW
+},
 }, {
   sequelize,
   modelName: 'reviews',

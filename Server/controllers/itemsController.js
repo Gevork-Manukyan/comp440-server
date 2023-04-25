@@ -64,7 +64,6 @@ async function postItem(username, itemData) {
     userUsername: username
   });
 
-  // const user = userController.getUserByUsername(username)
 
   // Find or create the categories for the item
   const categories = await Promise.all(

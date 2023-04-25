@@ -1,25 +1,38 @@
 const express = require("express")
 const router = express.Router()
 const reviewController = require("../controllers/reviewController");
+const userController = require("../controllers/userController")
 
-router.get('/allReviews', async (req, res) => {
+router.get('/allReviews', async (req, res, next) => {
     try {
       const reviews = await reviewController.getAllReviews()
       res.send(reviews);
     } catch (err) {
-      console.error('Error fetching reviews:', err);
-      res.status(500).send({ error: { message: 'An error occurred while fetching reviews', details: err } });
+      next(err)
     }
 });
 
-router.get('/getReviewsWithDetails', async (req, res) => {
+router.get('/getReviewsWithDetails', async (req, res, next) => {
   try {
     const reviews = await reviewController.getReviewsWithDetails()
     res.send(reviews);
   } catch (err) {
-    console.error('Error fetching reviews:', err);
-    res.status(500).send({ error: { message: 'An error occurred while fetching reviews', details: err } });
+    next(err)
   }
 });
+
+router.post("/postReview", async (req, res, next) => {
+  const review = req.body
+  const user = res.locals.user
+  
+  try {
+    const user_obj = await userController.fetchUserByEmail(user.email)
+    const username = user_obj.username
+    await reviewController.postReview(username, review)
+    res.status(201)
+  } catch (err) {
+    next(err)
+  }
+})
 
 module.exports = router

@@ -42,7 +42,17 @@ async function getReviewsWithDetails() {
   }
 }
 
+async function postReview(username, review) {
+  Review.create({
+    rating: review.rating,
+    reviewDescription: review.reviewDescription,
+    itemId: review.itemId,
+    userUsername: username
+  });
+}
+
 module.exports = {
     getAllReviews,
-    getReviewsWithDetails
+    getReviewsWithDetails,
+    postReview
 }

@@ -1,4 +1,5 @@
-const express = require("express")
+const express = require("express");
+const { ForbiddenError } = require("../../utils/errors");
 const router = express.Router()
 const reviewController = require("../controllers/reviewController");
 const userController = require("../controllers/userController")
@@ -28,14 +29,11 @@ router.post("/postReview", async (req, res, next) => {
   try {
     const user_obj = await userController.fetchUserByEmail(user.email)
     const username = user_obj.username
-    const check = await userController.checkUserReviewToday(username)
-    console.log("CHECK: ", check)
-    
+    const check = await userController.checkUserReviewToday(username)    
     const check2 = await userController.checkUserReviewingOwnItem(username, review.itemId)
-    console.log("IsOwner: ", check2)
 
-    if (!check) throw Error("REVIEW LIMIT REACHED")
-    if (check2) throw Error("USER CANNOT REVIEW OWN ITEM")
+    if (!check) throw new ForbiddenError("Reached Maximum Daily Reviews")
+    if (check2) throw new ForbiddenError("Cannot Review Your Own Item")
 
     await reviewController.postReview(username, review)
     res.status(201)

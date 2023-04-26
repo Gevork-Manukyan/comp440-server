@@ -30,8 +30,12 @@ router.post("/postReview", async (req, res, next) => {
     const username = user_obj.username
     const check = await userController.checkUserReviewToday(username)
     console.log("CHECK: ", check)
+    
+    const check2 = await userController.checkUserReviewingOwnItem(username, review.itemId)
+    console.log("IsOwner: ", check2)
 
     if (!check) throw Error("REVIEW LIMIT REACHED")
+    if (check2) throw Error("USER CANNOT REVIEW OWN ITEM")
 
     await reviewController.postReview(username, review)
     res.status(201)

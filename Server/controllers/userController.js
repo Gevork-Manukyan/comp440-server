@@ -88,6 +88,18 @@ async function checkUserReviewToday(username) {
     return count < 3;
 }
 
+async function checkUserReviewingOwnItem(username, itemId) {
+    // find the item with the given ID
+    const item = await Item.findByPk(itemId);
+  
+    // check if the user with the given username is the owner of the item
+    const isOwner = item.userUsername === username;
+  
+    // return true if the user is reviewing their own item, false otherwise
+    return isOwner;
+  }
+  
+
 async function fetchUserByEmail(email) {
     if (!email) {
         throw new BadRequestError('No email provided');
@@ -112,5 +124,6 @@ module.exports = {
     fetchUserByEmail,
     checkUserPostsToday,
     checkUserReviewToday,
+    checkUserReviewingOwnItem,
     getUserByUsername
 }

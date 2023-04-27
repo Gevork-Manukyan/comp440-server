@@ -1,4 +1,5 @@
 const express = require("express")
+const { ForbiddenError } = require("../../utils/errors");
 const router = express.Router()
 const itemsController = require("../controllers/itemsController")
 const userController = require("../controllers/userController")
@@ -37,7 +38,7 @@ router.post("/postItem", async (req, res, next) => {
     const username = user_obj.username
     const check = await userController.checkUserPostsToday(username)
     
-    if (!check) throw Error("POST LIMIT REACHED")
+    if (!check) throw new ForbiddenError("Reached Maximum Daily Posts")
 
     await itemsController.postItem(username, item)
     res.status(201)

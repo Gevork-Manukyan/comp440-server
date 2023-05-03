@@ -14,12 +14,8 @@ function createUserJwt (user) {
 }
 
 function validateToken (token) {
-    try {
-        const decodedToken = jwt.verify(token, SECRET_KEY)
-        return decodedToken
-    } catch (error) {
-        return error
-    }
+    const decodedToken = jwt.verify(token, SECRET_KEY)
+    return decodedToken
 }
 
 module.exports = {

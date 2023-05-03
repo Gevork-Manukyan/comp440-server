@@ -27,7 +27,6 @@ async function getAllItems() {
   return result;
 }
 
-
 async function getAllWhere(categoryName) {
   const items = await Item.findAll({
     attributes: ['id', 'title', 'description', 'datePosted', 'price', 'userUsername'],
@@ -79,6 +78,10 @@ async function postItem(username, itemData) {
 
   // Return the newly created item
   return newItem;
+}
+
+async function mostExpensiveByCategory(category) {
+  
 }
 
 

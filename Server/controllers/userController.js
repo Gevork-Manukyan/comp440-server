@@ -223,6 +223,25 @@ async function getNiceReviewers() {
     })
 }
 
+async function getMeanReviewers() {
+    const users = await sequelize.query(`
+    SELECT DISTINCT u.username
+    FROM users u
+    JOIN reviews r ON u.username = r.userUsername
+    WHERE r.rating = 'Poor'
+    AND u.username NOT IN (
+      SELECT DISTINCT u.username
+      FROM users u
+      JOIN reviews r ON u.username = r.userUsername
+      WHERE r.rating IN ('Excellent', 'Good', 'Fair')
+    );    
+    `)
+
+    return users[0].map(e => {
+        return e.username
+    })   
+}
+
 module.exports = {
     login,
     register, 
@@ -235,5 +254,6 @@ module.exports = {
     getExcellentGoodItemsForUser,
     getPopularUsers,
     getNotExcellentUsers,
-    getNiceReviewers
+    getNiceReviewers,
+    getMeanReviewers
 }

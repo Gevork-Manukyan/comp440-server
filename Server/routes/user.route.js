@@ -43,4 +43,14 @@ router.post("/register", async (req, res, next) => {
     }
 })
 
+router.get("/getTwoItemsDiffCategorySameDay", async (req, res, next) => {
+    try {
+        const response = await userController.getTwoItemsDiffCategorySameDay()
+        res.status(200).send(response)
+    }
+    catch(err) {
+        next(err)
+    }
+})
+
 module.exports = router

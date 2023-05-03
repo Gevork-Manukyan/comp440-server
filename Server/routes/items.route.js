@@ -32,7 +32,7 @@ router.get('/search', async (req, res, next) => {
 router.get('/getExpensiveItemsByCategory', async (req, res, next) => {
   try {
     const mostExpensiveItems = await itemsController.getExpensiveItemsByCategory()
-    res.send(mostExpensiveItems)
+    res.status(200).send(mostExpensiveItems)
 
   } catch(err) {
     next(err)

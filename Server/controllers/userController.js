@@ -118,6 +118,23 @@ async function getUserByUsername(username) {
     return user
 }
 
+async function getTwoItemsDiffCategorySameDay() {
+    const users = await sequelize.query(`
+    SELECT u.username
+    FROM users u
+    INNER JOIN items i1 ON i1.userUsername = u.username
+    INNER JOIN items i2 ON i2.userUsername = u.username AND i2.datePosted = i1.datePosted AND i2.id != i1.id
+    INNER JOIN itemCategories ic1 ON ic1.itemId = i1.id
+    INNER JOIN itemCategories ic2 ON ic2.itemId = i2.id AND ic2.categoryId != ic1.categoryId
+    GROUP BY u.username, i1.datePosted
+    HAVING COUNT(*) >= 2;
+    `)
+
+    return users[0].map(e => {
+        return e.username
+    })
+}
+
 module.exports = {
     login,
     register, 
@@ -125,5 +142,6 @@ module.exports = {
     checkUserPostsToday,
     checkUserReviewToday,
     checkUserReviewingOwnItem,
-    getUserByUsername
+    getUserByUsername,
+    getTwoItemsDiffCategorySameDay
 }

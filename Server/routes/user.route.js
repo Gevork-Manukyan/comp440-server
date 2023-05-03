@@ -64,4 +64,13 @@ router.get('/getExcellentGoodItemsForUser', async (req, res, next) => {
     }
 })
 
+router.get('/getPopularUsers', async (req, res, next) => {
+    try {
+        const users = await userController.getPopularUsers()
+        res.status(200).send(users)
+    } catch(err) {
+        next(err)
+    }
+})
+
 module.exports = router

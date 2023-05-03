@@ -151,6 +151,29 @@ async function getExcellentGoodItemsForUser(username) {
     return items[0]
 }
 
+async function getPopularUsers() {
+    const users = await sequelize.query(`
+    SELECT users.username, COUNT(items.id) AS total_items
+    FROM users
+    INNER JOIN items ON items.userUsername = users.username
+    WHERE items.datePosted >= '2020-05-01'
+    GROUP BY users.username
+    HAVING COUNT(items.id) = (
+      SELECT COUNT(items.id)
+      FROM items
+      WHERE items.userUsername = users.username AND items.datePosted >= '2020-05-01'
+      GROUP BY items.userUsername
+      ORDER BY COUNT(items.id) DESC
+      LIMIT 1
+    )
+    ORDER BY total_items DESC;
+    
+    `)
+
+    return users[0]
+}
+
+
 module.exports = {
     login,
     register, 
@@ -160,5 +183,6 @@ module.exports = {
     checkUserReviewingOwnItem,
     getUserByUsername,
     getTwoItemsDiffCategorySameDay,
-    getExcellentGoodItemsForUser
+    getExcellentGoodItemsForUser,
+    getPopularUsers
 }

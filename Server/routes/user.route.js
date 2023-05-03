@@ -73,4 +73,13 @@ router.get('/getPopularUsers', async (req, res, next) => {
     }
 })
 
+router.get("/getNotExcellentUsers", async (req, res, next) => {
+    try {
+        const users = await userController.getNotExcellentUsers()
+        res.status(200).send(users)
+    } catch(err) {
+        next(err)
+    }
+})
+
 module.exports = router

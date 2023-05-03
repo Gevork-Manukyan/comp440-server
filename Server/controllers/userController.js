@@ -173,6 +173,37 @@ async function getPopularUsers() {
     return users[0]
 }
 
+async function getNotExcellentUsers() {
+    const users = await sequelize.query(`
+    SELECT DISTINCT users.username
+    FROM users
+    LEFT JOIN items ON users.username = items.userUsername
+    LEFT JOIN (
+        SELECT itemId, COUNT(*) AS excellent_reviews_count
+        FROM reviews
+        WHERE rating = 'Excellent'
+        GROUP BY itemId
+    ) AS reviews_count ON items.id = reviews_count.itemId
+    WHERE NOT EXISTS (
+        SELECT *
+        FROM items AS i
+        JOIN (
+            SELECT itemId, COUNT(*) AS excellent_reviews_count
+            FROM reviews
+            WHERE rating = 'Excellent'
+            GROUP BY itemId
+        ) AS rc ON i.id = rc.itemId
+        WHERE i.userUsername = users.username AND rc.excellent_reviews_count >= 3
+    );
+
+    
+    `)
+
+    return users[0].map(e => {
+        return e.username
+    })
+}
+
 
 module.exports = {
     login,
@@ -184,5 +215,6 @@ module.exports = {
     getUserByUsername,
     getTwoItemsDiffCategorySameDay,
     getExcellentGoodItemsForUser,
-    getPopularUsers
+    getPopularUsers,
+    getNotExcellentUsers
 }

@@ -48,14 +48,5 @@ router.post("/postItem", async (req, res, next) => {
   }
 })
 
-router.get("/mostExpensiveByCategory", async (req, res, next) => {
-  try {
-    
-
-  } catch (err) {
-    next(err)
-  }
-})
-
 
 module.exports = router

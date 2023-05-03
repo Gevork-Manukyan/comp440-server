@@ -17,17 +17,27 @@ router.get('/search', async (req, res, next) => {
     const { category_startswith } = req.query;
     try {
         let items;
-        if (!category_startswith) {
-            items = await itemsController.getAllItems()
+        if (category_startswith) {
+          items = await itemsController.getAllWhere(category_startswith)
         } 
         else {
-            items = await itemsController.getAllWhere(category_startswith)
+          items = await itemsController.getAllItems()
         }
         res.send(items);
     } catch (err) {
        next(err)
     }
 });
+
+router.get('/getExpensiveItemsByCategory', async (req, res, next) => {
+  try {
+    const mostExpensiveItems = await itemsController.getExpensiveItemsByCategory()
+    res.send(mostExpensiveItems)
+
+  } catch(err) {
+    next(err)
+  }
+})
 
 router.post("/postItem", async (req, res, next) => {
   const item = req.body

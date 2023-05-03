@@ -2,7 +2,9 @@ const ItemCategory = require("../models/item-category.model")
 const Item = require("../models/item.model")
 const Category = require("../models/category.model");
 const sequelize = require("../db");
+const Sequelize = require('sequelize');
 const userController = require('./userController')
+const { Op } = require('sequelize');
 
 async function getAllItems() {
   const items = await Item.findAll({
@@ -81,9 +83,23 @@ async function postItem(username, itemData) {
   return newItem;
 }
 
+async function getExpensiveItemsByCategory() {
+  const result = await sequelize.query(`
+  SELECT c.category, i.title as item, i.price
+  FROM categories c
+  LEFT JOIN itemCategories ic ON c.id = ic.categoryId
+  LEFT JOIN items i ON ic.itemId = i.id
+  WHERE i.price = (SELECT MAX(price) FROM items WHERE id IN (SELECT itemId FROM itemCategories WHERE categoryId = c.id));
+`)
+
+  return result[0]
+}
+
+
 
 module.exports = {
   getAllItems,
   getAllWhere,
-  postItem
+  postItem,
+  getExpensiveItemsByCategory
 }

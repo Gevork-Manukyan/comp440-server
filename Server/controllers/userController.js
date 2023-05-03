@@ -2,7 +2,7 @@ const User = require("../models/user.model")
 const Item = require("../models/item.model")
 const Review = require("../models/review.model")
 const db = require("../db")
-const { BadRequestError } = require('../../utils/errors');
+const { BadRequestError, UnauthorizedError } = require('../../utils/errors');
 const sequelize = require("../db");
 
 
@@ -23,7 +23,7 @@ const login = async (credentials) => {
         }
     }
 
-    throw new UnauthorizedError('Invalid Email or Password');
+    throw new UnauthorizedError('Invalid Username or Password');
 }
  
 const register = async (credentials) => {
@@ -135,6 +135,22 @@ async function getTwoItemsDiffCategorySameDay() {
     })
 }
 
+async function getExcellentGoodItemsForUser(username) {
+    const items = await sequelize.query(`
+    SELECT DISTINCT items.*
+    FROM items
+    INNER JOIN reviews ON items.id = reviews.itemId
+    WHERE reviews.rating IN ('Excellent', 'Good')
+    AND items.userUsername = '${username}'
+    AND items.id NOT IN (
+        SELECT DISTINCT itemId FROM reviews WHERE rating IN ('Fair', 'Poor')
+    );
+   
+    `)
+
+    return items[0]
+}
+
 module.exports = {
     login,
     register, 
@@ -143,5 +159,6 @@ module.exports = {
     checkUserReviewToday,
     checkUserReviewingOwnItem,
     getUserByUsername,
-    getTwoItemsDiffCategorySameDay
+    getTwoItemsDiffCategorySameDay,
+    getExcellentGoodItemsForUser
 }

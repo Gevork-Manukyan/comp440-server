@@ -260,6 +260,26 @@ async function getGoodProducers() {
     })
 }
 
+async function getFriendUsers() {
+    const users = await sequelize.query(`
+    SELECT r1.userUsername AS user1, r2.userUsername AS user2
+    FROM reviews AS r1
+    JOIN reviews AS r2 ON r1.itemId = r2.itemId AND r1.userUsername <> r2.userUsername
+    WHERE r1.rating = 'Excellent'
+      AND r2.rating = 'Excellent'
+      AND NOT EXISTS (
+        SELECT *
+        FROM reviews
+        WHERE itemId = r1.itemId
+          AND userUsername IN (r1.userUsername, r2.userUsername)
+          AND rating IN ('Poor', 'Fair', 'Good')
+      )
+    GROUP BY user1, user2;    
+    `)
+
+    return users[0]
+}
+
 module.exports = {
     login,
     register, 
@@ -274,5 +294,6 @@ module.exports = {
     getNotExcellentUsers,
     getNiceReviewers,
     getMeanReviewers,
-    getGoodProducers
+    getGoodProducers,
+    getFriendUsers
 }

@@ -109,4 +109,13 @@ router.get("/getGoodProducers", async (req, res, next) => {
     }
 })
 
+router.get("/getFriendUsers", async (req, res, next) => {
+    try {
+        const users = await userController.getFriendUsers()
+        res.status(200).send(users)
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router

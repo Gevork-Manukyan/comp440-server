@@ -2,7 +2,8 @@ const sequelize = require("../db");
 const Item = require("../models/item.model");
 const User = require("../models/user.model");
 const Review = require("../models/review.model")
-const Category = require("../models/category.model")
+const Category = require("../models/category.model");
+const FavoriteUsers = require("../models/favoritedUsers.model");
 
 const initDB = () => {
     sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
@@ -20,6 +21,9 @@ const initDB = () => {
     })
     .then(() => {
       return sequelize.query('DROP TABLE IF EXISTS users');
+    })
+    .then(() => {
+      return sequelize.query('DROP TABLE IF EXISTS favoriteUsers')
     })
     .then(() => {
       return sequelize.sync({ force: true })
@@ -69,6 +73,15 @@ const initDB = () => {
       item.addCategory(category1);
       item.addCategory(category2);
 
+    })
+    .then(() => {
+      FavoriteUsers.create({ user: "BillyDoe123", favoritedUser: "BrianDoe123" })
+      FavoriteUsers.create({ user: "BillyDoe123", favoritedUser: "SteveDoe123" })
+      FavoriteUsers.create({ user: "BrianDoe123", favoritedUser: "SteveDoe123" })
+      FavoriteUsers.create({ user: "BrianDoe123", favoritedUser: "JohnDoe123" })
+      FavoriteUsers.create({ user: "BillyDoe123", favoritedUser: "JohnDoe123" })
+      FavoriteUsers.create({ user: "SteveDoe123", favoritedUser: "JohnDoe123" })
+      FavoriteUsers.create({ user: "KevinDoe123", favoritedUser: "JohnDoe123" })
     })
     .catch((error) => {
       console.error(error);

@@ -280,6 +280,19 @@ async function getFriendUsers() {
     return users[0]
 }
 
+async function getSameFriends(user1, user2) {
+    const users = await sequelize.query(`
+    SELECT DISTINCT fav1.favoritedUser
+    FROM favoriteUsers fav1
+    INNER JOIN favoriteUsers fav2 ON fav1.favoritedUser = fav2.favoritedUser
+    WHERE fav1.user = '${user1}' AND fav2.user = '${user2}';    
+    `)
+
+    return users[0].map(e => {
+        return e.favoritedUser
+    })
+}
+
 module.exports = {
     login,
     register, 
@@ -295,5 +308,6 @@ module.exports = {
     getNiceReviewers,
     getMeanReviewers,
     getGoodProducers,
-    getFriendUsers
+    getFriendUsers,
+    getSameFriends
 }

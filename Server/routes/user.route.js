@@ -118,4 +118,14 @@ router.get("/getFriendUsers", async (req, res, next) => {
     }
 })
 
+router.get("/getSameFriends", async (req, res, next) => {
+    try {
+        const {user1, user2} = req.body
+        const users = await userController.getSameFriends(user1, user2)
+        res.status(200).send(users)
+    } catch(err) {
+        next(err)
+    }
+})
+
 module.exports = router

@@ -12,6 +12,7 @@ const dbRoutes = require('./routes/database.route')
 const itemsRoutes = require('./routes/items.route')
 const categoryRoutes = require("./routes/category.route")
 const reviewRoutes = require("./routes/review.route")
+const { NotFoundError } = require("../utils/errors")
 
 // Middleware
 app.use(cors())

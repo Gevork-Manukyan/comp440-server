@@ -242,6 +242,24 @@ async function getMeanReviewers() {
     })   
 }
 
+async function getGoodProducers() {
+    const users = await sequelize.query(`
+    SELECT u.*
+    FROM users u
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM items i
+        LEFT JOIN reviews r ON i.id = r.itemId
+        WHERE u.username = i.userUsername AND r.rating = 'Poor'
+    );
+
+    `)
+
+    return users[0].map(e => {
+        return e.username
+    })
+}
+
 module.exports = {
     login,
     register, 
@@ -255,5 +273,6 @@ module.exports = {
     getPopularUsers,
     getNotExcellentUsers,
     getNiceReviewers,
-    getMeanReviewers
+    getMeanReviewers,
+    getGoodProducers
 }

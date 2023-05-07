@@ -53,9 +53,10 @@ router.get("/getTwoItemsDiffCategorySameDay", async (req, res, next) => {
     }
 })
 
-router.get('/getExcellentGoodItemsForUser', async (req, res, next) => {
+router.get('/getExcellentGoodItemsForUser/:username', async (req, res, next) => {
     try {
-        const username = req.body.username
+        const username = req.params.username
+        console.log("PRINT: ", username)
         const response = await userController.getExcellentGoodItemsForUser(username)
         res.status(200).send(response)
     }

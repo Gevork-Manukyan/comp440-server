@@ -6,6 +6,14 @@ const { BadRequestError, UnauthorizedError } = require('../../utils/errors');
 const sequelize = require("../db");
 
 
+const getAllUsers = async () => {
+    const allUsers = await User.findAll();
+    const cleanedUsers = allUsers.map(user => {
+        return user.dataValues.username
+    })
+    return cleanedUsers
+}
+
 const login = async (credentials) => {
     const requiredFields = ['username', 'password'];
     requiredFields.forEach((field) => {
@@ -309,5 +317,6 @@ module.exports = {
     getMeanReviewers,
     getGoodProducers,
     getFriendUsers,
-    getSameFriends
+    getSameFriends,
+    getAllUsers
 }

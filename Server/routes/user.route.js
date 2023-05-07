@@ -16,6 +16,15 @@ router.get('/me', security.requireAuthenticatedUser, async (req, res, next) => {
     }
 })
 
+router.get("/getAllUsers", async (req, res, next) => {
+    try {
+        const allUsers = await userController.getAllUsers() 
+        return res.status(200).send(allUsers)
+    } catch (err) {
+        next(err)
+    } 
+})
+
 // Login Endpoint
 router.post("/login", async (req, res, next) => {
     try {
@@ -118,9 +127,10 @@ router.get("/getFriendUsers", async (req, res, next) => {
     }
 })
 
-router.get("/getSameFriends", async (req, res, next) => {
+router.post("/getSameFriends", async (req, res, next) => {
     try {
         const {user1, user2} = req.body
+        console.log("BODY: ", req.body)
         const users = await userController.getSameFriends(user1, user2)
         res.status(200).send(users)
     } catch(err) {

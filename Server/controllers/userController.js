@@ -270,20 +270,75 @@ async function getGoodProducers() {
 
 async function getFriendUsers() {
     const users = await sequelize.query(`
-    SELECT r1.userUsername AS user1, r2.userUsername AS user2
-    FROM reviews AS r1
-    JOIN reviews AS r2 ON r1.itemId = r2.itemId AND r1.userUsername <> r2.userUsername
-    WHERE r1.rating = 'Excellent'
-      AND r2.rating = 'Excellent'
+    SELECT U1.username as User1, U2.username as User2
+    FROM users AS U1 
+    INNER JOIN reviews AS R1 ON U1.username = R1.userUsername
+    INNER JOIN items AS I1 ON R1.itemId = I1.id 
+    INNER JOIN users AS U2 ON U2.username = I1.userUsername 
+    INNER JOIN reviews AS R2 ON U2.username = R2.userUsername 
+    INNER JOIN items AS I2 ON R2.itemId = I2.id 
+    WHERE R1.rating = 'Excellent' AND R2.rating = 'Excellent' 
+      AND U1.username < U2.username 
+      AND I1.userUsername != U1.username 
+      AND I2.userUsername != U2.username 
       AND NOT EXISTS (
         SELECT *
-        FROM reviews
-        WHERE itemId = r1.itemId
-          AND userUsername IN (r1.userUsername, r2.userUsername)
-          AND rating IN ('Poor', 'Fair', 'Good')
+        FROM items AS I 
+        WHERE I.userUsername = U1.username 
+          AND I.id NOT IN (
+            SELECT R.itemId 
+            FROM reviews AS R 
+            WHERE R.userUsername = U2.username 
+          )
+      ) 
+      AND NOT EXISTS (
+        SELECT *
+        FROM items AS I 
+        WHERE I.userUsername = U2.username 
+          AND I.id NOT IN (
+            SELECT R.itemId 
+            FROM reviews AS R 
+            WHERE R.userUsername = U1.username 
+          )
       )
-    GROUP BY user1, user2;    
+    
+    UNION 
+    
+    SELECT U1.username as User1, U2.username as User2
+    FROM users AS U2 
+    INNER JOIN reviews AS R2 ON U2.username = R2.userUsername 
+    INNER JOIN items AS I2 ON R2.itemId = I2.id 
+    INNER JOIN users AS U1 ON U1.username = I2.userUsername 
+    INNER JOIN reviews AS R1 ON U1.username = R1.userUsername 
+    INNER JOIN items AS I1 ON R1.itemId = I1.id 
+    WHERE R2.rating = 'Excellent' AND R1.rating = 'Excellent' 
+      AND U1.username < U2.username 
+      AND I2.userUsername != U2.username 
+      AND I1.userUsername != U1.username 
+      AND NOT EXISTS (
+        SELECT *
+        FROM items AS I 
+        WHERE I.userUsername = U1.username 
+          AND I.id NOT IN (
+            SELECT R.itemId 
+            FROM reviews AS R 
+            WHERE R.userUsername = U2.username 
+          )
+      ) 
+      AND NOT EXISTS (
+        SELECT *
+        FROM items AS I 
+        WHERE I.userUsername = U2.username 
+          AND I.id NOT IN (
+            SELECT R.itemId 
+            FROM reviews AS R 
+            WHERE R.userUsername = U1.username 
+          )
+      );
+    
     `)
+
+    console.log("USERS: ", users[0])
 
     return users[0]
 }

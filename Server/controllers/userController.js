@@ -133,12 +133,15 @@ async function getTwoItemsDiffCategorySameDay(category1, category2) {
     INNER JOIN items i1 ON i1.userUsername = u.username
     INNER JOIN items i2 ON i2.userUsername = u.username AND i2.datePosted = i1.datePosted AND i2.id != i1.id
     INNER JOIN itemCategories ic1 ON ic1.itemId = i1.id
-    INNER JOIN itemCategories ic2 ON ic2.itemId = i2.id AND ic2.categoryId != ic1.categoryId
-    WHERE i1.id = ${category1} AND i2.id = ${category2}
-    GROUP BY u.username, i1.datePosted
-    HAVING COUNT(*) >= 2;
-    
+    INNER JOIN itemCategories ic2 ON ic2.itemId = i2.id
+    INNER JOIN categories c1 ON c1.id = ic1.categoryId
+    INNER JOIN categories c2 ON c2.id = ic2.categoryId
+    WHERE c1.category = '${category1}'
+      AND c2.category = '${category2}'
+    GROUP BY u.username, i1.datePosted;    
     `)
+
+    console.log("USERS: ", users)
 
     return users[0].map(e => {
         return e.username

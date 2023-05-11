@@ -1,8 +1,5 @@
 const sequelize = require("../db");
-const Item = require("../models/item.model");
 const User = require("../models/user.model");
-const Review = require("../models/review.model")
-const Category = require("../models/category.model");
 const FavoriteUsers = require("../models/favoritedUsers.model");
 
 const initDB = () => {

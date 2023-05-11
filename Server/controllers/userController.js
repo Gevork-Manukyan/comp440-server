@@ -218,8 +218,8 @@ async function getNiceReviewers() {
     const users = await sequelize.query(`
     SELECT DISTINCT u.*
     FROM users u
-    INNER JOIN reviews r ON u.username = r.userUsername
-    WHERE r.rating IN ('Excellent', 'Good', 'Fair')
+    LEFT JOIN reviews r ON u.username = r.userUsername
+    WHERE (r.rating IS NULL OR r.rating IN ('Excellent', 'Good', 'Fair'))
     AND u.username NOT IN (
       SELECT DISTINCT u2.username
       FROM users u2

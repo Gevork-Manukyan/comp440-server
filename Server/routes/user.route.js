@@ -52,9 +52,11 @@ router.post("/register", async (req, res, next) => {
     }
 })
 
-router.get("/getTwoItemsDiffCategorySameDay", async (req, res, next) => {
+router.get("/getTwoItemsDiffCategorySameDay/:category1/:category2", async (req, res, next) => {
     try {
-        const response = await userController.getTwoItemsDiffCategorySameDay()
+        const category1 = req.params.category1
+        const category2 = req.params.category2
+        const response = await userController.getTwoItemsDiffCategorySameDay(category1, category2)
         res.status(200).send(response)
     }
     catch(err) {

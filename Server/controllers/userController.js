@@ -126,7 +126,7 @@ async function getUserByUsername(username) {
     return user
 }
 
-async function getTwoItemsDiffCategorySameDay() {
+async function getTwoItemsDiffCategorySameDay(category1, category2) {
     const users = await sequelize.query(`
     SELECT u.username
     FROM users u
@@ -134,8 +134,10 @@ async function getTwoItemsDiffCategorySameDay() {
     INNER JOIN items i2 ON i2.userUsername = u.username AND i2.datePosted = i1.datePosted AND i2.id != i1.id
     INNER JOIN itemCategories ic1 ON ic1.itemId = i1.id
     INNER JOIN itemCategories ic2 ON ic2.itemId = i2.id AND ic2.categoryId != ic1.categoryId
+    WHERE i1.id = ${category1} AND i2.id = ${category2}
     GROUP BY u.username, i1.datePosted
     HAVING COUNT(*) >= 2;
+    
     `)
 
     return users[0].map(e => {

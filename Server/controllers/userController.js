@@ -256,12 +256,18 @@ async function getGoodProducers() {
     const users = await sequelize.query(`
     SELECT u.*
     FROM users u
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM items i
-        LEFT JOIN reviews r ON i.id = r.itemId
-        WHERE u.username = i.userUsername AND r.rating = 'Poor'
+    WHERE EXISTS (
+      SELECT 1
+      FROM items i
+      LEFT JOIN reviews r ON i.id = r.itemId
+      WHERE u.username = i.userUsername AND (r.rating IS NULL OR r.rating IN ('Excellent', 'Good', 'Fair'))
+    )
+    AND EXISTS (
+      SELECT 1
+      FROM items i
+      WHERE u.username = i.userUsername
     );
+    
 
     `)
 

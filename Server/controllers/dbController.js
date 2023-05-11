@@ -38,43 +38,6 @@ const initDB = () => {
 
     })
     .then(() => {
-      const item = Item.create({
-        title: "Example Item",
-        description: "This is an example item.",
-        price: 10.99,
-        userUsername: "BillyDoe123"
-      });
-      console.log("Item created:");
-      return item
-    })
-    .then((item) => {
-      Review.create({
-        rating: "Excellent",
-        reviewDescription: "This is a great product",
-        itemId: item.id,
-        userUsername: "BillyDoe123"
-      });
-      console.log("Review created:");
-      return item
-    })
-    .then((item) => {
-      const category1 = Category.create({
-        category: 'Ball'
-      });
-
-      const category2 = Category.create({
-        category: 'Weapon'
-      });
-
-      return Promise.all([item, category1, category2]);
-    })
-    .then(([item, category1, category2]) => {
-
-      item.addCategory(category1);
-      item.addCategory(category2);
-
-    })
-    .then(() => {
       FavoriteUsers.create({ user: "BillyDoe123", favoritedUser: "BrianDoe123" })
       FavoriteUsers.create({ user: "BillyDoe123", favoritedUser: "SteveDoe123" })
       FavoriteUsers.create({ user: "BrianDoe123", favoritedUser: "SteveDoe123" })

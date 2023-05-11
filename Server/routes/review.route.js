@@ -31,9 +31,11 @@ router.post("/postReview", async (req, res, next) => {
     const username = user_obj.username
     const check = await userController.checkUserReviewToday(username)    
     const check2 = await userController.checkUserReviewingOwnItem(username, review.itemId)
+    const check3 = await userController.checkUserReviewedItem(username, review.itemId)
 
     if (!check) throw new ForbiddenError("Reached Maximum Daily Reviews")
     if (check2) throw new ForbiddenError("Cannot Review Your Own Item")
+    if (check3) throw new ForbiddenError("Cannot Review An Item You Have Already Reviewed")
 
     await reviewController.postReview(username, review)
     res.status(201)

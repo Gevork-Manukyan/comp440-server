@@ -106,6 +106,20 @@ async function checkUserReviewingOwnItem(username, itemId) {
     // return true if the user is reviewing their own item, false otherwise
     return isOwner;
   }
+
+  async function checkUserReviewedItem(username, itemId) {
+    // find the review with the given user and item IDs
+    const existingReview = await Review.findOne({
+      where: {
+        userUsername: username,
+        itemId: itemId
+      }
+    });
+  
+    // return true if a review already exists, false otherwise
+    return existingReview !== null;
+  }
+  
   
 
 async function fetchUserByEmail(email) {
@@ -257,27 +271,35 @@ async function getMeanReviewers() {
 
 async function getGoodProducers() {
     const users = await sequelize.query(`
-    SELECT u.*
-    FROM users u
-    WHERE EXISTS (
-      SELECT 1
-      FROM items i
-      LEFT JOIN reviews r ON i.id = r.itemId
-      WHERE u.username = i.userUsername AND (r.rating IS NULL OR r.rating IN ('Excellent', 'Good', 'Fair'))
-    )
-    AND EXISTS (
-      SELECT 1
-      FROM items i
-      WHERE u.username = i.userUsername
-    );
-    
-
-    `)
-
-    return users[0].map(e => {
-        return e.username
-    })
-}
+      SELECT u.*
+      FROM users u
+      WHERE EXISTS (
+        SELECT 1
+        FROM items i
+        WHERE u.username = i.userUsername
+        AND NOT EXISTS (
+          SELECT 1
+          FROM reviews r
+          WHERE r.itemId = i.id AND r.rating = 'Poor'
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM reviews r
+          WHERE r.itemId = i.id
+        )
+      )
+      AND NOT EXISTS (
+        SELECT 1
+        FROM items i
+        INNER JOIN reviews r ON i.id = r.itemId
+        WHERE u.username = i.userUsername AND r.rating = 'Poor'
+      )
+    `);
+  
+    return users[0].map(e => e.username);
+  }
+  
+  
 
 async function getFriendUsers() {
     const users = await sequelize.query(`
@@ -374,6 +396,7 @@ module.exports = {
     checkUserPostsToday,
     checkUserReviewToday,
     checkUserReviewingOwnItem,
+    checkUserReviewedItem,
     getUserByUsername,
     getTwoItemsDiffCategorySameDay,
     getExcellentGoodItemsForUser,
